@@ -225,8 +225,11 @@ protected:
     virtual int console_gateway_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         const string_t& info_form_field_value = this->info_form_field_value();
+        const string_t& users_form_field_name = this->users_form_field_name();
         const string_t& user_form_field_name = this->user_form_field_name();
+        const string_t& resources_form_field_name = this->resources_form_field_name();
         const string_t& resource_form_field_name = this->resource_form_field_name();
+        const string_t& passwords_form_field_name = this->passwords_form_field_name();
         const string_t& password_form_field_name = this->password_form_field_name();
         const string_t& default_password_form_field_name = this->default_password_form_field_name();
         const string_t& default_password = this->default_password();
@@ -257,6 +260,15 @@ protected:
             this->set_udentify_user(user_chars);
         } else {
             LOGGER_IS_LOGGED_INFO("...failed on (user_chars = this->first_query_or_form_field_named_chars(user_form_field_name))");
+            LOGGER_IS_LOGGED_INFO("(user_chars = this->first_query_or_form_field_named_chars(users_form_field_name))...");
+            if ((user_chars = this->first_query_or_form_field_named_chars(users_form_field_name))) {
+                string_t& user_form_field_value = this->user_form_field_value();
+                user_form_field_value.assign(user_chars);
+                LOGGER_IS_LOGGED_INFO("this->set_udentify_user(user_chars)...");
+                this->set_udentify_user(user_chars);
+            } else {
+                LOGGER_IS_LOGGED_INFO("...failed on (user_chars = this->first_query_or_form_field_named_chars(users_form_field_name))");
+            }
         }
         LOGGER_IS_LOGGED_INFO("(resource_chars = this->first_query_or_form_field_named_chars(resource_form_field_name))...");
         if ((resource_chars = this->first_query_or_form_field_named_chars(resource_form_field_name))) {
@@ -266,11 +278,31 @@ protected:
             this->set_udentify_resource(resource_chars);
         } else {
             LOGGER_IS_LOGGED_INFO("...failed on (resource_chars = this->first_query_or_form_field_named_chars(resource_form_field_name))");
+            LOGGER_IS_LOGGED_INFO("(resource_chars = this->first_query_or_form_field_named_chars(resources_form_field_name))...");
+            if ((resource_chars = this->first_query_or_form_field_named_chars(resources_form_field_name))) {
+                string_t& resource_form_field_value = this->resource_form_field_value();
+                resource_form_field_value.assign(resource_chars);
+                LOGGER_IS_LOGGED_INFO("this->set_udentify_resource(resource_chars)...");
+                this->set_udentify_resource(resource_chars);
+            } else {
+                LOGGER_IS_LOGGED_INFO("...failed on (resource_chars = this->first_query_or_form_field_named_chars(resources_form_field_name))");
+            }
         }
         LOGGER_IS_LOGGED_INFO("(password_chars = this->first_query_or_form_field_named_chars(password_form_field_name))...");
         if ((password_chars = this->first_query_or_form_field_named_chars(password_form_field_name))) {
             LOGGER_IS_LOGGED_INFO("this->set_udentify_password(\"" << password_chars << "\")...");
             this->set_udentify_password(password_chars);
+        } else {
+            LOGGER_IS_LOGGED_INFO("...failed on (password_chars = this->first_query_or_form_field_named_chars(password_form_field_name))");
+            LOGGER_IS_LOGGED_INFO("(password_chars = this->first_query_or_form_field_named_chars(passwords_form_field_name))...");
+            if ((password_chars = this->first_query_or_form_field_named_chars(passwords_form_field_name))) {
+                LOGGER_IS_LOGGED_INFO("this->set_udentify_password(\"" << password_chars << "\")...");
+                this->set_udentify_password(password_chars);
+            } else {
+                LOGGER_IS_LOGGED_INFO("...failed on (password_chars = this->first_query_or_form_field_named_chars(passwords_form_field_name))");
+            }
+        }
+        if ((password_chars)) {
             LOGGER_IS_LOGGED_INFO("(!(info_form_field_value.compare(\"" << password_chars << "\")))...");
             if (!(info_form_field_value.compare(password_chars))) {
                 LOGGER_IS_LOGGED_INFO("...(!(info_form_field_value.compare(\"" << password_chars << "\")))");
@@ -283,9 +315,7 @@ protected:
             } else {
                 LOGGER_IS_LOGGED_INFO("...failed on (!(info_form_field_value.compare(\"" << password_chars << "\")))");
             }
-        } else {
-            LOGGER_IS_LOGGED_INFO("...failed on (password_chars = this->first_query_or_form_field_named_chars(password_form_field_name))");
-        }
+        } else {}
         LOGGER_IS_LOGGED_INFO("!(err = this->all_console_gateway_out_run(argc, argv, env))...");
         if (!(err = this->udentify_console_gateway_out_run(argc, argv, env))) {
             LOGGER_IS_LOGGED_INFO("...!(" << err << " = this->all_console_gateway_out_run(argc, argv, env))");
@@ -336,8 +366,9 @@ protected:
         const string_t& info_form_field_name = this->info_form_field_name();
         const string_t& user_form_field_value = this->user_form_field_value();
         const string_t& resource_form_field_value = this->resource_form_field_value();
-        const string_t message_to_output(msg);
+        string_t& message_to_output = this->message_to_output();
 
+        message_to_output.assign(msg);
         msg.assign(info_form_field_name);
         msg.append(" ");
         msg.append(user_form_field_value);
@@ -491,11 +522,16 @@ protected:
         return (bool&) response_was_output_;
     }
     //////////////////////////////////////////////////////////////////////////
+    virtual string_t& message_to_output() const {
+        return (string_t&)message_to_output_;
+    }
+    //////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////
 protected:
     xos::io::format::json::node_events& json_node_events_;
     bool response_was_output_;
+    string_t message_to_output_;
 }; /// class maint 
 typedef maint<> main;
 

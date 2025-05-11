@@ -64,10 +64,13 @@ public:
 
       info_form_field_name_("udentity"), 
       info_form_field_value_("info"), 
+      users_form_field_name_("users"),
       user_form_field_name_("user"),
       user_form_field_value_(user_form_field_name_),
+      resources_form_field_name_("resources"), 
       resource_form_field_name_("resource"), 
       resource_form_field_value_(resource_form_field_name_), 
+      passwords_form_field_name_("passwords"), 
       password_form_field_name_("password"), 
       password_form_field_value_(password_form_field_name_), 
       form_field_name_(password_form_field_name_), 
@@ -126,17 +129,29 @@ protected:
     virtual string_t& info_form_field_value() const {
         return (string_t&) info_form_field_value_;
     }
+    //////////////////////////////////////////////////////////////////////////
+    virtual string_t& users_form_field_name() const {
+        return (string_t&) users_form_field_name_;
+    }
     virtual string_t& user_form_field_name() const {
         return (string_t&) user_form_field_name_;
     }
     virtual string_t& user_form_field_value() const {
         return (string_t&) user_form_field_value_;
     }
+    //////////////////////////////////////////////////////////////////////////
+    virtual string_t& resources_form_field_name() const {
+        return (string_t&) resources_form_field_name_;
+    }
     virtual string_t& resource_form_field_name() const {
         return (string_t&) resource_form_field_name_;
     }
     virtual string_t& resource_form_field_value() const {
         return (string_t&) resource_form_field_value_;
+    }
+    //////////////////////////////////////////////////////////////////////////
+    virtual string_t& passwords_form_field_name() const {
+        return (string_t&) passwords_form_field_name_;
     }
     virtual string_t& password_form_field_name() const {
         return (string_t&) password_form_field_name_;
@@ -180,9 +195,9 @@ protected:
     //////////////////////////////////////////////////////////////////////////
 protected:
     string_t info_form_field_name_, info_form_field_value_, 
-             user_form_field_name_, user_form_field_value_, 
-             resource_form_field_name_, resource_form_field_value_, 
-             password_form_field_name_, password_form_field_value_, 
+             users_form_field_name_, user_form_field_name_, user_form_field_value_, 
+             resources_form_field_name_, resource_form_field_name_, resource_form_field_value_, 
+             passwords_form_field_name_, password_form_field_name_, password_form_field_value_, 
              form_field_name_, default_user_form_field_name_, default_resource_form_field_name_, 
              default_password_form_field_name_, default_password_, password_;
 }; /// class maint 
